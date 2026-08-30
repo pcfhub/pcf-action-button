@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "slug": "pcf-action-button",
+  "name": "Action Button",
+  "tagline": "A button for canvas apps that raises OnSelect, with an optional two-step confirm.",
+  "category": "utilities",
+  "tags": [
+    "canvas",
+    "button",
+    "events",
+    "confirmation",
+    "accessible",
+    "no-react"
+  ],
+  "control": {
+    "namespace": "PCFHub",
+    "constructor": "ActionButton",
+    "type": "field",
+    "framework": "standard",
+    "manifestPath": "ActionButton/ControlManifest.Input.xml"
+  },
+  "links": {
+    "homepage": "https://github.com/pcfhub/pcf-action-button",
+    "support": "https://github.com/pcfhub/pcf-action-button/issues",
+    "license": "MIT"
+  },
+  "docs": {
+    "path": "docs"
+  },
+  "media": {
+    "logo": "media/logo.png",
+    "screenshots": [
+      "media/screenshot-armed.png",
+      "media/screenshot.png",
+      "media/screenshot-dark.png"
+    ]
+  },
+  "demo": {
+    "fidelity": "limited",
+    "bundle": "out/controls/ActionButton/bundle.js",
+    "styles": [
+      "out/controls/ActionButton/css/ActionButton.css"
+    ],
+    "limitations": [
+      "OnSelect reaches no Power Fx here. There is no app behind this demo, so pressing the button shows what the control does and not what a maker would wire it to — which is the whole point of the control on a real screen.",
+      "It is not known whether this harness supplies a context.events bag at all. If it does not, what you are pressing is the control's fallback path: it writes its output properties and announces them, which is what a maker handling OnChange would see. Either way the button behaves identically, and that is by design.",
+      "Disabled and hidden are not shown. Presets set properties, and both of those states come from context.mode, which has no preset representation."
+    ],
+    "presets": [
+      {
+        "slug": "plain",
+        "name": "A plain button",
+        "description": "One press, one OnSelect. The default configuration and the one most buttons want.",
+        "props": {
+          "label": "Submit",
+          "confirmRequired": false,
+          "confirmLabel": "",
+          "icon": "none"
+        },
+        "isDefault": true
+      },
+      {
+        "slug": "confirm-delete",
+        "name": "Two-step delete",
+        "description": "The first press asks and turns the button red; the second raises OnSelect. It reverts itself after four seconds, and Escape cancels it — press once and wait to see that.",
+        "props": {
+          "label": "Delete record",
+          "confirmRequired": true,
+          "confirmLabel": "Delete permanently?",
+          "icon": "delete"
+        }
+      },
+      {
+        "slug": "send",
+        "name": "With a glyph",
+        "description": "The send arrow, which is one of the two glyphs Fluent marks as mirroring itself in a right-to-left app.",
+        "props": {
+          "label": "Send for approval",
+          "confirmRequired": false,
+          "confirmLabel": "",
+          "icon": "send"
+        }
+      },
+      {
+        "slug": "long-label",
+        "name": "A long label, confirmed",
+        "description": "The button wraps rather than overflowing, and does not change size between its two labels — the layout a narrow canvas screen actually produces.",
+        "props": {
+          "label": "Submit this expense report for approval",
+          "confirmRequired": true,
+          "confirmLabel": "Confirm submission",
+          "icon": "none"
+        }
+      }
+    ]
+  }
+}

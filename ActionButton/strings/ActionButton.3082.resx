@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Spanish (es-ES, LCID 3082).
+
+    Keep the key set identical to ActionButton.1033.resx. A key missing here does
+    not fall back to English — it renders as the key name, and only for users in
+    this language, so nobody who reads English ever sees it. `npm run check`
+    compares the two.
+
+    Action Button and A button for canvas apps that raises OnSelect, with an optional two-step confirm. are filled by `npm run setup` with the English
+    title and tagline you gave it, because the template cannot know them. They
+    are the two values in this file worth translating by hand.
+  -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+<data name="ActionButton_Name" xml:space="preserve">
+    <value>Botón de acción</value>
+  </data>
+  <data name="ActionButton_Desc" xml:space="preserve">
+    <value>Un botón para aplicaciones de lienzo que genera OnSelect, con confirmación opcional en dos pasos.</value>
+  </data>
+
+  <data name="label_Name" xml:space="preserve">
+    <value>Etiqueta</value>
+  </data>
+  <data name="label_Desc" xml:space="preserve">
+    <value>El texto del botón. También es su nombre accesible.</value>
+  </data>
+  <data name="confirmRequired_Name" xml:space="preserve">
+    <value>Requerir confirmación</value>
+  </data>
+  <data name="confirmRequired_Desc" xml:space="preserve">
+    <value>Preguntar antes de actuar: la primera pulsación arma el botón y la segunda genera OnSelect.</value>
+  </data>
+  <data name="confirmLabel_Name" xml:space="preserve">
+    <value>Etiqueta de confirmación</value>
+  </data>
+  <data name="confirmLabel_Desc" xml:space="preserve">
+    <value>Lo que dice el botón una vez armado. Déjelo vacío para usar el valor predeterminado.</value>
+  </data>
+
+  <data name="icon_Name" xml:space="preserve">
+    <value>Icono</value>
+  </data>
+  <data name="icon_Desc" xml:space="preserve">
+    <value>Un símbolo opcional antes de la etiqueta.</value>
+  </data>
+  <data name="icon_None" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
+  <data name="icon_Send" xml:space="preserve">
+    <value>Enviar</value>
+  </data>
+  <data name="icon_Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+
+  <data name="pressCount_Name" xml:space="preserve">
+    <value>Número de pulsaciones</value>
+  </data>
+  <data name="pressCount_Desc" xml:space="preserve">
+    <value>Cuántas veces ha actuado el botón. Aumenta en cada pulsación, para que una acción repetida siga generando OnChange.</value>
+  </data>
+  <data name="lastAction_Name" xml:space="preserve">
+    <value>Última acción</value>
+  </data>
+  <data name="lastAction_Desc" xml:space="preserve">
+    <value>"press" para un botón de una pulsación, "confirm" para la segunda pulsación de una confirmación.</value>
+  </data>
+
+  <data name="ActionButton_DefaultLabel" xml:space="preserve">
+    <value>Enviar</value>
+  </data>
+  <data name="ActionButton_Confirm" xml:space="preserve">
+    <value>¿Confirmar?</value>
+  </data>
+  <data name="ActionButton_Armed" xml:space="preserve">
+    <value>Pulse de nuevo para confirmar.</value>
+  </data>
+  <data name="ActionButton_TimedOut" xml:space="preserve">
+    <value>La confirmación ha expirado.</value>
+  </data>
+  <data name="ActionButton_Cancelled" xml:space="preserve">
+    <value>Cancelado.</value>
+  </data>
+</root>

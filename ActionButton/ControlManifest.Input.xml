@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <!--
+    The version here is what the Power Platform upgrades on, and the release
+    workflow refuses to publish a tag that disagrees with it. Bump this,
+    Solution/src/Other/Solution.xml and package.json in the same commit.
+  -->
+  <control namespace="PCFHub"
+           constructor="ActionButton"
+           version="0.1.0"
+           display-name-key="ActionButton_Name"
+           description-key="ActionButton_Desc"
+           control-type="standard">
+
+    <external-service-usage enabled="false" />
+
+    <!--
+      THERE IS NO BOUND PROPERTY, AND THAT IS THE DESIGN.
+
+      A button does not read or write a column: it reports that somebody pressed
+      it. Declaring a `bound` property in order to have one would attach this
+      control to an arbitrary field and make `getOutputs()` responsible for a
+      value it never touches.
+
+      The consequence is that this control is CANVAS-ONLY, and not by degrees. A
+      model-driven form hosts a code component *on a column*, and it has no
+      Power Fx to bind an event to — the form-side answer to "I want a button"
+      is a command-bar button. `docs/model-driven.md` is deleted rather than
+      shipped explaining an absence, and `docs/overview.md` says why. That is the
+      mirror image of the model-driven-only case in the skill's
+      `references/control-patterns.md`, where `docs/canvas.md` goes instead.
+    -->
+
+    <!--
+      The button's text, and therefore its accessible name — index.ts
+      deliberately sets no `aria-label`, so there is nothing that can disagree
+      with what the button visibly says.
+
+      `pfx-default-value` IS A POWER FX EXPRESSION, NOT A VALUE, and that is why
+      the attribute is delimited with single quotes: the delimiter has to be `'`
+      so the Power Fx string literal can keep its own `"`. Written
+      pfx-default-value="Submit" the formula would be the *identifier* Submit,
+      which resolves to nothing and leaves the button blank.
+
+      Where a host reads it, it takes precedence over `default-value` — so the
+      two are kept in step by hand. `default-value` is what every other host and
+      PCFHub's demo harness see.
+
+      It is exercised here rather than on the event on purpose: a default
+      formula on OnSelect would be this control deciding what a maker's button
+      does.
+    -->
+    <property name="label"
+              display-name-key="label_Name"
+              description-key="label_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false"
+              default-value="Submit"
+              pfx-default-value='"Submit"' />
+
+    <!--
+      Off by default, because a button that demands two presses by default is a
+      surprising button.
+
+      Note what that costs. A `default-value="false"` reaches PCFHub's demo
+      harness as the raw XML *string* "false", and `Boolean("false")` is `true`
+      — so the property arrives switched ON on the one surface the public sees.
+      pcf-sparkline dodged this by defaulting its own TwoOptions to `true`; this
+      one cannot, so index.ts reads every TwoOptions through a normaliser rather
+      than trusting `raw`, and every preset in pcfhub.json sets it explicitly.
+    -->
+    <property name="confirmRequired"
+              display-name-key="confirmRequired_Name"
+              description-key="confirmRequired_Desc"
+              of-type="TwoOptions"
+              usage="input"
+              required="false"
+              default-value="false" />
+
+    <!--
+      Empty by default, falling back to the localised "Confirm?" from the .resx.
+      A maker who wants "Delete permanently?" says so; a maker who says nothing
+      gets their own language rather than an English literal compiled into the
+      bundle.
+    -->
+    <property name="confirmLabel"
+              display-name-key="confirmLabel_Name"
+              description-key="confirmLabel_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false"
+              default-value="" />
+
+    <!--
+      Enum rather than free text, so `refreshTypes` turns the values into a real
+      string union and a typo is a compile error rather than a button with no
+      glyph.
+
+      TWO GLYPHS AND AN OFF SWITCH, and the smallness is the decision. Each glyph
+      is path data this repository then owns forever, and an icon that does not
+      name the action is decoration — only the maker knows what the button does.
+      Send and delete are the two actions a confirm button is overwhelmingly used
+      for, and the two whose glyphs are recognised without reading. Anything else
+      belongs in `label`, as words.
+    -->
+    <property name="icon"
+              display-name-key="icon_Name"
+              description-key="icon_Desc"
+              of-type="Enum"
+              usage="input"
+              required="false"
+              default-value="none">
+      <value name="none" display-name-key="icon_None">none</value>
+      <value name="send" display-name-key="icon_Send">send</value>
+      <value name="delete" display-name-key="icon_Delete">delete</value>
+    </property>
+
+    <!--
+      TWO OUTPUTS FOR ONE BUTTON, AND THE SECOND ONE IS NOT REDUNDANT.
+
+      `OnChange` fires when an output *changes*, not when the control writes one.
+      Two consecutive confirmed presses both writing lastAction="confirm" are one
+      change and one silence — the maker sees a button that works once. That is
+      the same class of bug as pcf-star-rating's `?? undefined` clear: invisible
+      on the host you test first, reliable in the field.
+
+      `pressCount` is what makes a repeat observable. It increments only on a
+      press that actually raises, so the arming press of a confirmation does not
+      count, and it never resets within an instance — see docs/limitations.md.
+    -->
+    <property name="pressCount"
+              display-name-key="pressCount_Name"
+              description-key="pressCount_Desc"
+              of-type="Whole.None"
+              usage="output" />
+
+    <property name="lastAction"
+              display-name-key="lastAction_Name"
+              description-key="lastAction_Desc"
+              of-type="SingleLine.Text"
+              usage="output" />
+
+    <!--
+      THE FIRST EVENT DECLARED BY ANY CONTROL IN THIS CATALOGUE.
+
+      `<common-event>` and `<event>` are two elements and the difference is
+      enforced. Read out of pcf-scripts@1.51.1 rather than out of the docs:
+
+        - ManifestSchema.json's `commonEventAttribs` accepts ONLY `name` — an
+          enum of exactly OnSelect and OnChange — and `pfx-default-value`. No
+          display-name-key, no description-key. `additionalProperties: false`,
+          so anything else fails the build rather than being ignored.
+        - `eventAttribs`, the custom element, accepts name, display-name-key,
+          description-key, pfx-default-value and hidden.
+        - manifestSchemaValidator.js's `validateEventNodes` rejects a custom
+          <event> named OnSelect or OnChange, case-insensitively: "is a reserved
+          system event name, use common-event instead".
+        - The whole feature is gated on the flag `pcfAllowEvents`, which is "on"
+          in pcf-scripts' own featureflags.json. If a future version ships it
+          off, this manifest stops building and the message says so.
+
+      OnSelect rather than a custom event because it is the property a canvas
+      maker already looks for on a button. A custom `OnClick` beside it would be
+      a second name for the same gesture.
+
+      `OnChange` is NOT declared. It is implicit for any component with output
+      properties, and declaring it risks displacing the implicit one for no gain.
+
+      No `pfx-default-value` here: a default formula on OnSelect would be this
+      control deciding what a maker's button does.
+
+      Nothing generated by `refreshTypes` mentions this element —
+      manifestTypesGenerator.js reads only type-group, property and data-set — so
+      the event reaches the code through `context.events`, which the type
+      definitions declare independently of the manifest. index.ts explains what
+      that means for trusting it.
+    -->
+    <common-event name="OnSelect" />
+
+    <resources>
+      <code path="index.ts" order="1" />
+      <css path="css/ActionButton.css" order="1" />
+      <!--
+        Every language the control ships. A .resx on disk but missing here is
+        never packed, and nothing warns: the control runs in English for that
+        locale while the repository looks translated. `npm run check` catches
+        that, and a key missing from a language.
+
+        THE ORDER IS DELIBERATE AND 1033 GOES LAST. `pcf-start` picks the .resx
+        by manifest order rather than by locale — it reads whichever file is
+        listed last and ignores the LCID entirely. The platform itself ignores
+        the order completely, so `npm start` is the only thing in the world that
+        reads it. ADD A NEW LANGUAGE ABOVE THIS LINE: appending a sixth file
+        after 1033 silently moves the harness to that language, and the symptom
+        shows up in a session nobody connects to a manifest edit.
+      -->
+      <resx path="strings/ActionButton.3082.resx" version="1.0.0" />
+      <resx path="strings/ActionButton.1036.resx" version="1.0.0" />
+      <resx path="strings/ActionButton.1031.resx" version="1.0.0" />
+      <resx path="strings/ActionButton.1041.resx" version="1.0.0" />
+      <resx path="strings/ActionButton.1033.resx" version="1.0.0" />
+    </resources>
+
+    <!--
+      No `<feature-usage>`, and the block is deleted rather than left commented.
+
+      Every entry there is an install-time permission prompt for the maker, and
+      this control needs none: it reads context.mode, context.resources and
+      context.userSettings, and raises an event. Nothing reaches the Web API, the
+      Utility API, a device or an external service.
+    -->
+  </control>
+</manifest>

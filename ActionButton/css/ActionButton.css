@@ -1,0 +1,276 @@
+/*
+  Every rule is scoped under .ActionButton.
+
+  A code component's CSS is loaded into the whole page, not into a shadow root,
+  so an unscoped `button { }` here restyles the host app.
+*/
+
+/*
+  The palette, as Fluent's design tokens with literal fallbacks.
+
+  `FluentProvider` is what emits the tokens as CSS custom properties, and a
+  plain-DOM control cannot mount one — the provider is React and this is not. So
+  the tokens are read here, never emitted, and the fallbacks have to stand up
+  alone. They are Fluent's web light theme, read from `@fluentui/tokens` rather
+  than eyeballed.
+
+  For this control the fallbacks matter more than for most: it is canvas-only,
+  and a canvas app publishes no tokens at all. What is written below is what a
+  maker actually sees.
+
+  Declared once here rather than at each use site, because the dark set has to
+  redefine them and a palette scattered through the file is a palette that
+  cannot be.
+*/
+.ActionButton {
+    --ActionButton-background: var(--colorNeutralBackground1, #ffffff);
+    --ActionButton-background-hover: var(--colorNeutralBackground1Hover, #f5f5f5);
+    --ActionButton-background-pressed: var(--colorNeutralBackground1Pressed, #e0e0e0);
+    --ActionButton-background-disabled: var(--colorNeutralBackgroundDisabled, #f0f0f0);
+    --ActionButton-stroke: var(--colorNeutralStroke1, #d1d1d1);
+    --ActionButton-stroke-hover: var(--colorNeutralStroke1Hover, #c7c7c7);
+    --ActionButton-stroke-disabled: var(--colorNeutralStrokeDisabled, #e0e0e0);
+    --ActionButton-stroke-focus: var(--colorCompoundBrandStroke, #0f6cbd);
+    --ActionButton-focus-inner: var(--colorStrokeFocus1, #ffffff);
+    --ActionButton-focus-outer: var(--colorStrokeFocus2, #000000);
+    --ActionButton-foreground: var(--colorNeutralForeground1, #242424);
+    --ActionButton-foreground-disabled: var(--colorNeutralForegroundDisabled, #bdbdbd);
+
+    /*
+      The armed state borrows the danger palette rather than the brand one.
+
+      A confirmation is a warning, and the two states have to be told apart at a
+      glance by somebody who is not reading the label — which is the whole
+      reason the button changes colour as well as text.
+    */
+    --ActionButton-armed-stroke: var(--colorPaletteRedBorder2, #d13438);
+    --ActionButton-armed-foreground: var(--colorPaletteRedForeground1, #bc2f32);
+    --ActionButton-armed-background: var(--colorPaletteRedBackground1, #fdf3f4);
+
+    --ActionButton-radius: var(--borderRadiusMedium, 4px);
+    --ActionButton-font-family: var(
+        --fontFamilyBase,
+        "Segoe UI",
+        "Segoe UI Web (West European)",
+        -apple-system,
+        BlinkMacSystemFont,
+        Roboto,
+        "Helvetica Neue",
+        sans-serif
+    );
+    --ActionButton-font-size: var(--fontSizeBase300, 14px);
+    --ActionButton-line-height: var(--lineHeightBase300, 20px);
+    --ActionButton-font-weight: var(--fontWeightSemibold, 600);
+    --ActionButton-duration-faster: var(--durationFaster, 100ms);
+    --ActionButton-curve-ease: var(--curveEasyEase, cubic-bezier(0.33, 0, 0.67, 1));
+
+    display: block;
+    box-sizing: border-box;
+    font-family: var(--ActionButton-font-family);
+    color: var(--ActionButton-foreground);
+}
+
+/*
+  The dark fallbacks, chosen from `fluentDesignLanguage.isDarkTheme` in
+  `index.ts` rather than from `prefers-color-scheme`. The media query answers the
+  wrong question: an app carries its own theme and the operating system's setting
+  says nothing about it.
+
+  Only the fallbacks change here. A host that emits the tokens is already handing
+  over its own dark values through the `var()`.
+*/
+.ActionButton--dark {
+    --ActionButton-background: var(--colorNeutralBackground1, #292929);
+    --ActionButton-background-hover: var(--colorNeutralBackground1Hover, #3d3d3d);
+    --ActionButton-background-pressed: var(--colorNeutralBackground1Pressed, #1f1f1f);
+    --ActionButton-background-disabled: var(--colorNeutralBackgroundDisabled, #141414);
+    --ActionButton-stroke: var(--colorNeutralStroke1, #666666);
+    --ActionButton-stroke-hover: var(--colorNeutralStroke1Hover, #757575);
+    --ActionButton-stroke-disabled: var(--colorNeutralStrokeDisabled, #424242);
+    --ActionButton-stroke-focus: var(--colorCompoundBrandStroke, #479ef5);
+    --ActionButton-focus-inner: var(--colorStrokeFocus1, #000000);
+    --ActionButton-focus-outer: var(--colorStrokeFocus2, #ffffff);
+    --ActionButton-foreground: var(--colorNeutralForeground1, #ffffff);
+    --ActionButton-foreground-disabled: var(--colorNeutralForegroundDisabled, #5c5c5c);
+    --ActionButton-armed-stroke: var(--colorPaletteRedBorder2, #e37d80);
+    --ActionButton-armed-foreground: var(--colorPaletteRedForeground1, #e37d80);
+    --ActionButton-armed-background: var(--colorPaletteRedBackground1, #3b2325);
+}
+
+/*
+  Fluent's Secondary button: a real border, a neutral fill, semibold text.
+
+  `width: 100%` because a canvas maker sizes the component by dragging its box,
+  and a button that ignored that would sit in the corner of whatever they drew.
+  The height is `min-height`, not `height`, so a long label wraps rather than
+  overflowing — canvas apps put controls in genuinely narrow places.
+*/
+.ActionButton .ActionButton-button {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacingHorizontalS, 8px);
+    width: 100%;
+    min-height: 32px;
+    padding: var(--spacingVerticalXS, 4px) var(--spacingHorizontalM, 12px);
+    border: 1px solid var(--ActionButton-stroke);
+    border-radius: var(--ActionButton-radius);
+    background-color: var(--ActionButton-background);
+    color: var(--ActionButton-foreground);
+    font-family: inherit;
+    font-size: var(--ActionButton-font-size);
+    line-height: var(--ActionButton-line-height);
+    font-weight: var(--ActionButton-font-weight);
+    cursor: pointer;
+    outline-style: none;
+    transition:
+        background-color var(--ActionButton-duration-faster) var(--ActionButton-curve-ease),
+        border-color var(--ActionButton-duration-faster) var(--ActionButton-curve-ease),
+        color var(--ActionButton-duration-faster) var(--ActionButton-curve-ease);
+}
+
+.ActionButton .ActionButton-button:hover {
+    background-color: var(--ActionButton-background-hover);
+    border-color: var(--ActionButton-stroke-hover);
+}
+
+.ActionButton .ActionButton-button:active {
+    background-color: var(--ActionButton-background-pressed);
+}
+
+/*
+  Fluent's focus indicator: a dark ring with a light one immediately inside it,
+  so the shape survives against a light fill and a dark one. A single outline
+  disappears into whichever background happens to match it.
+
+  `:focus-visible` rather than `:focus`, so a mouse click does not leave a ring
+  behind on a button the user is not navigating by keyboard. That matters more
+  here than usual, because this button is often pressed and then pressed again.
+*/
+.ActionButton .ActionButton-button:focus-visible {
+    outline: 2px solid var(--ActionButton-focus-outer);
+    outline-offset: -2px;
+    box-shadow: inset 0 0 0 4px var(--ActionButton-focus-inner);
+}
+
+/*
+  Armed: a warning, not a second primary.
+
+  Colour is the redundant channel — the label has already changed and that is
+  what a screen reader announces. This is for the sighted user who is about to
+  press again without re-reading.
+*/
+.ActionButton--armed .ActionButton-button {
+    border-color: var(--ActionButton-armed-stroke);
+    background-color: var(--ActionButton-armed-background);
+    color: var(--ActionButton-armed-foreground);
+}
+
+.ActionButton--armed .ActionButton-button:hover {
+    border-color: var(--ActionButton-armed-stroke);
+    background-color: var(--ActionButton-armed-background);
+}
+
+/*
+  Disabled is a different surface, not a dimmer one.
+
+  `opacity` over the enabled styling is the reflex and it is wrong twice: it
+  drags the *text* below contrast along with the chrome, and it looks nothing
+  like Fluent, which removes the fill and reveals the border.
+*/
+.ActionButton--disabled .ActionButton-button,
+.ActionButton--disabled .ActionButton-button:hover {
+    border-color: var(--ActionButton-stroke-disabled);
+    background-color: var(--ActionButton-background-disabled);
+    color: var(--ActionButton-foreground-disabled);
+    cursor: not-allowed;
+}
+
+.ActionButton .ActionButton-icon {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+}
+
+/*
+  Required, and not decoration: an author `display` on the glyph beats the
+  user-agent `[hidden]` rule, so without this the hidden icon still draws.
+*/
+.ActionButton .ActionButton-icon[hidden] {
+    display: none;
+}
+
+/*
+  Only the glyphs Fluent marks `flipInRtl` are mirrored, and the send arrow is
+  one — it points the way the text runs. A bin has no handedness and keeps its
+  own orientation.
+
+  Keyed off `[dir="rtl"]` on any ancestor rather than on the control's own root,
+  so it still applies if a host sets direction further up.
+*/
+[dir="rtl"] .ActionButton .ActionButton-icon--flip {
+    transform: scaleX(-1);
+}
+
+/*
+  Visually hidden, never `display: none`.
+
+  A live region removed from the accessibility tree between announcements is one
+  some screen readers stop watching. It is hidden rather than shown because the
+  visible feedback is the label swap — printing "Press again to confirm." under
+  a button that already says "Delete permanently?" is the same sentence twice.
+*/
+.ActionButton .ActionButton-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.ActionButton--hidden {
+    display: none;
+}
+
+/*
+  Forced colours, where every colour above is replaced by a system keyword.
+
+  The armed state loses its red entirely, so it is redrawn with a dashed border:
+  a confirmation whose only remaining signal is "this is a button" would be
+  indistinguishable from the state it is warning about.
+*/
+@media (forced-colors: active) {
+    .ActionButton .ActionButton-button {
+        border-color: ButtonBorder;
+        color: ButtonText;
+    }
+
+    .ActionButton--armed .ActionButton-button {
+        border-style: dashed;
+        border-color: Highlight;
+        color: ButtonText;
+    }
+
+    .ActionButton--disabled .ActionButton-button {
+        border-color: GrayText;
+        color: GrayText;
+    }
+
+    .ActionButton .ActionButton-button:focus-visible {
+        outline-color: Highlight;
+    }
+}
+
+/*
+  Shortened, not removed. The transitions here are a hover and the colour change
+  that accompanies arming — neither carries state on its own, because the label
+  carries it.
+*/
+@media screen and (prefers-reduced-motion: reduce) {
+    .ActionButton .ActionButton-button {
+        transition-duration: 0.01ms;
+    }
+}
