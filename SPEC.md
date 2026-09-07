@@ -62,6 +62,21 @@ an unobservable output, and canvas is not. Both outputs here start at a
 non-nullable value and are only ever assigned one, so `?? undefined` never
 becomes the edit that quiets `tsc`.
 
+**A model-driven form CAN bind an event, and an earlier version of this file said
+it could not.** Corrected on 2026-09-07 while building `pcf-form-action-button`.
+Microsoft's [`event` element](https://learn.microsoft.com/power-apps/developer/component-framework/manifest-schema-reference/event)
+reference reads "Available for: Canvas and model-driven apps"; a form script
+binds one with `formContext.getControl(name).addEventHandler("<name>", fn)` and
+receives a payload that may carry callbacks. Only the summary table on the
+manifest-schema index says canvas alone.
+
+**This control is still canvas-only, for the reason that was always true**: it
+binds no column, and a model-driven form hosts a field component *on* one. The
+form-side counterpart is `pcf-form-action-button`, which binds an anchor column
+and declares a custom `<event name="onAction">` — custom rather than
+`<common-event>`, because `addEventHandler` binds by the event's own name and
+`OnSelect` is reserved.
+
 **`context.mode.isControlDisabled` is the whole disabled story for a control with
 no bound column.** There is no `security` to consult, because there is no column
 to secure. Saying so is better than carrying the scaffold's field-level-security
@@ -157,12 +172,14 @@ must be pasted into a real app before the tag.
 
 **That the control appears at all in a model-driven context.** It should not, and
 the docs say it does not, but nobody has tried to add it to a form to see what
-the maker experience of that refusal looks like.
+the maker experience of that refusal looks like. Note that "it should not" now
+rests only on the missing bound property — not, as this file used to claim, on
+model-driven having no way to bind an event.
 
-## Promoting a finding
+## Promoted to the skill
 
-The skill's `references/control-patterns.md` has **no events section**. These
-belong in one:
+All of this is now in the skill's `references/control-patterns.md`, under
+*Events*, which did not exist when this file was written:
 
 - `<event>` versus `<common-event>`, the reserved names, and the `pcfAllowEvents`
   flag.
@@ -171,5 +188,8 @@ belong in one:
 - `pfx-default-value`'s quoting rule and its precedence over `default-value`.
 - The outputs-and-event double channel, and the double-fire hazard it buys.
 - `pressCount`: why a control with outputs needs a counter, not just a state.
+- **The model-driven half**, which this control got wrong: `addEventHandler`,
+  payload callbacks, and `addOnOutputChange`. Contributed by
+  `pcf-form-action-button`.
 
 And one for *Standard controls*: **one `export` per entry file**.

@@ -41,9 +41,14 @@ Two other things it does that a plain button does not:
 
 It binds no column, and that is the design — a button reports that somebody
 pressed it, it does not read or write a value. A model-driven form hosts a code
-component *on a column* and has no Power Fx to bind an event to, so there is no
-sensible way to place this on a form. **The form-side answer to "I want a
-button" is a command-bar button**, which is a different tool and a better one for
-that job.
+component *on a column*, so there is nowhere on a form to put a control that
+binds none.
+
+**For a button on a model-driven form, use
+[Form Action Button](https://pcfhub.dev/components/pcf-form-action-button).** It
+is the same idea built for that host: it binds an anchor column, confirms with
+the platform's own dialog, and hands the press to a form script that can answer
+it. A command-bar button is still the right answer when the button belongs at the
+top of the form rather than beside a field.
 
 There is deliberately no *Model-driven apps* page for this control.

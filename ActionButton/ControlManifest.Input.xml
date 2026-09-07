@@ -22,13 +22,25 @@
       control to an arbitrary field and make `getOutputs()` responsible for a
       value it never touches.
 
-      The consequence is that this control is CANVAS-ONLY, and not by degrees. A
-      model-driven form hosts a code component *on a column*, and it has no
-      Power Fx to bind an event to — the form-side answer to "I want a button"
-      is a command-bar button. `docs/model-driven.md` is deleted rather than
-      shipped explaining an absence, and `docs/overview.md` says why. That is the
-      mirror image of the model-driven-only case in the skill's
-      `references/control-patterns.md`, where `docs/canvas.md` goes instead.
+      The consequence is that this control is CANVAS-ONLY, and the reason is
+      exactly that and nothing more: a model-driven form hosts a field component
+      *on a column*, so a control that binds none cannot be placed on one.
+      `docs/model-driven.md` is deleted rather than shipped explaining an
+      absence, and `docs/overview.md` says why. That is the mirror image of the
+      model-driven-only case in the skill's `references/control-patterns.md`,
+      where `docs/canvas.md` goes instead.
+
+      **An earlier version of this comment gave a second reason, and it was
+      wrong.** It said a form "has no Power Fx to bind an event to", implying
+      events are a canvas feature. They are not: Microsoft's `event` element
+      reference reads "Available for: Canvas and model-driven apps", and a form
+      script binds one with
+      `formContext.getControl(name).addEventHandler("<name>", fn)` — receiving a
+      payload that may carry callbacks, which Power Fx cannot. See
+      `pcf-form-action-button`, which is this control's model-driven counterpart
+      and is built on exactly that. Note it declares a CUSTOM <event> rather than
+      the <common-event> below, because `addEventHandler` binds by the event's
+      own name and OnSelect is reserved.
     -->
 
     <!--
@@ -163,6 +175,12 @@
       OnSelect rather than a custom event because it is the property a canvas
       maker already looks for on a button. A custom `OnClick` beside it would be
       a second name for the same gesture.
+
+      That is the right trade for a canvas-only control and the wrong one for a
+      model-driven control, which is why `pcf-form-action-button` declares a
+      custom `<event name="onAction">` instead: a form script binds by the
+      event's own name with `addEventHandler`, and OnSelect is a reserved name
+      that `validateEventNodes` rejects on a custom `<event>`.
 
       `OnChange` is NOT declared. It is implicit for any component with output
       properties, and declaring it risks displacing the implicit one for no gain.
