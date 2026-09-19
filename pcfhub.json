@@ -4,8 +4,8 @@
   "name": "Action Button",
   "tagline": "A button for canvas apps that raises OnSelect, with an optional two-step confirm.",
   "category": "utilities",
+  "hosts": ["canvas"],
   "tags": [
-    "canvas",
     "button",
     "events",
     "confirmation",
