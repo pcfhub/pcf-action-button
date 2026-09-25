@@ -5,6 +5,8 @@ A button for canvas apps that raises OnSelect, with an optional two-step confirm
 [![Build](https://github.com/pcfhub/pcf-action-button/actions/workflows/build.yml/badge.svg)](https://github.com/pcfhub/pcf-action-button/actions/workflows/build.yml)
 [![Release](https://github.com/pcfhub/pcf-action-button/actions/workflows/release.yml/badge.svg)](https://github.com/pcfhub/pcf-action-button/actions/workflows/release.yml)
 
+[![Try it live on PCFHub](https://pcfhub.dev/badges/try-it-live.svg)](https://pcfhub.dev/components/pcf-action-button)
+
 Documentation lives on [PCFHub](https://pcfhub.dev/components/pcf-action-button), built
 from the `docs/` directory in this repository. Edit the Markdown here; the hub
 recompiles it.
