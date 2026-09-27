@@ -129,14 +129,19 @@ test a live region outside a browser.
 ## Demo
 
 `fidelity: "limited"`. Everything a visitor touches is real — the label, the
-glyph, the confirm swap, the timeout, Escape, the outputs. Two things are not:
-`OnSelect` reaches no Power Fx, because there is no app behind the demo; and it
-is not known whether the harness supplies a `context.events` bag at all, so a
-press there may be exercising the fallback rather than the event path. Both are
-written into `demo.limitations`.
+glyph, the confirm swap, the timeout, Escape, the outputs, and since the hub's
+Read-only and Right-to-left toggles (pcfhub/pcfhub#43), disabled and the
+mirrored send glyph. Two things are not: `OnSelect` reaches no Power Fx, because
+there is no app behind the demo, and hidden has no switch. Both are written into
+`demo.limitations`.
 
-Moving to `full` needs an answer to the second one, which is a question about the
-hub rather than about this control.
+This section used to leave a second question open, whether the harness supplies
+a `context.events` bag at all. It does, with nothing bound to it: a press there
+takes the event path, and since pcfhub/pcfhub#44 the demo's event log reports
+each one as raised. Moving to `full` was waiting on that answer. What remains is
+that no formula sits behind `OnSelect`, which is true of any demo, so whether
+that alone still earns `limited` is a decision for the next release rather than
+a question about the hub.
 
 ## Not verified
 

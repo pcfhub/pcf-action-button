@@ -84,12 +84,13 @@ canvas app publishes no tokens at all.
 cannot be: an app.
 
 Everything a visitor touches is real — the label, the glyph, the two-step
-confirm, the timeout, Escape, the output properties. What is missing is the far
-side: `OnSelect` reaches no Power Fx, because there is no formula behind the
-demo. And it is not known whether the hub's harness supplies a `context.events`
-bag at all, which means a press there may be exercising the control's fallback
-path rather than its event path. Both are stated in `demo.limitations` rather
-than left for a visitor to wonder about.
+confirm, the timeout, Escape, the output properties, and, from the demo's
+toolbar, disabled and right-to-left. What is missing is the far side: `OnSelect`
+reaches no Power Fx, because there is no formula behind the demo. The hub's
+harness does supply a `context.events` bag, with nothing bound to it, so each
+press raises the event to nobody and the demo's event log shows it. Hidden has no
+switch. All of it is stated in `demo.limitations` rather than left for a visitor
+to wonder about.
 
 Four presets: **A plain button**, **Two-step delete** (press once and wait to see
 it revert), **With a glyph**, and **A long label, confirmed**, which is the one
