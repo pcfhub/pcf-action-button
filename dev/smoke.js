@@ -142,7 +142,7 @@ function mount(options = {}) {
         notifications: () => calls.filter((call) => call === 'notifyOutputChanged').length,
         raised: () => calls.filter((call) => call.indexOf('events.OnSelect') === 0).length,
         find: (selector) => container.querySelector(selector),
-        findAll: (selector) => container.querySelectorAll(selector),
+        findAll: (selector) => Array.from(container.querySelectorAll(selector)),
         button: () => container.querySelector('.ActionButton-button'),
         caption: () => container.querySelector('.ActionButton-caption').textContent,
         status: () => container.querySelector('.ActionButton-status').textContent,
