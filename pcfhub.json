@@ -3,6 +3,7 @@
   "slug": "pcf-action-button",
   "name": "Action Button",
   "tagline": "A button for canvas apps that raises OnSelect, with an optional two-step confirm.",
+  "summary": "A button for a canvas app that covers the case the built-in one does not: a destructive action that should be confirmed without a dialog. Handle `OnSelect` in Power Fx as usual; with **Require confirmation** on, the first press swaps the label and turns the button red, and the second press acts.\n\n- An armed button reverts on its own after four seconds, on Escape, or when focus leaves\n- `PressCount` increases on every press, so `OnChange` sees a repeated press too\n- It binds no column and asks for no permissions at install",
   "category": "utilities",
   "hosts": ["canvas"],
   "tags": [
