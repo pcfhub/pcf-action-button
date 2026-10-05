@@ -11,6 +11,10 @@ handle **OnSelect** in Power Fx — the same property you already reach for on a
 built-in button. Turn on **Require confirmation** and the first press asks
 instead of acting.
 
+:::callout{type=warning}
+**Reference example · built with AI.** This control was written with AI (Claude) and tested on a live Dataverse form; its code has not been reviewed line by line. It is published as a worked example and is not maintained — read the source and [SPEC.md](https://github.com/pcfhub/pcf-action-button/blob/main/SPEC.md) (what was measured on the form) before you use it. Fixes are not guaranteed.
+:::
+
 ::image{src=media/screenshot-armed.png alt="Action Button armed: a red-outlined button reading Delete permanently?" zoom}
 
 ## Why this one
