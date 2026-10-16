@@ -64,8 +64,28 @@
      * looks in production rather than throwing.
      */
     var STRINGS = {
-        ActionButton_Name: 'Action Button',
-        ActionButton_NoAccess: 'You do not have access to this field.',
+        ActionButton_Name: "Action Button",
+        ActionButton_Desc: "A button for canvas apps that raises OnSelect, with an optional two-step confirm.",
+        label_Name: "Label",
+        label_Desc: "The text on the button. It is also the button’s accessible name.",
+        confirmRequired_Name: "Require confirmation",
+        confirmRequired_Desc: "Ask before acting: the first press arms the button, the second raises OnSelect.",
+        confirmLabel_Name: "Confirmation label",
+        confirmLabel_Desc: "What the button says once it is armed. Leave empty for the default.",
+        icon_Name: "Icon",
+        icon_Desc: "An optional glyph before the label.",
+        icon_None: "None",
+        icon_Send: "Send",
+        icon_Delete: "Delete",
+        pressCount_Name: "Press count",
+        pressCount_Desc: "How many times the button has acted. Increases on every press, so a repeated action still raises OnChange.",
+        lastAction_Name: "Last action",
+        lastAction_Desc: "\"press\" for a single-press button, \"confirm\" for the second press of a confirmation.",
+        ActionButton_DefaultLabel: "Submit",
+        ActionButton_Confirm: "Confirm?",
+        ActionButton_Armed: "Press again to confirm.",
+        ActionButton_TimedOut: "Confirmation timed out.",
+        ActionButton_Cancelled: "Cancelled.",
     };
 
     /**
